@@ -27,15 +27,17 @@ namespace LS
         [SerializeField] bool dodgeInput = false;
         [SerializeField] bool sprintInput = false;
         [SerializeField] bool jumpInput = false;
+        [SerializeField] bool lightAttackInput = false;
+        [SerializeField] bool heavyAttackInput = false;
 
         public float moveAmount;
 
         private void Awake()
         {
-            if(instance == null)
+            if (instance == null)
             {
                 instance = this;
-            }else
+            } else
             {
                 Destroy(gameObject);
             }
@@ -51,7 +53,7 @@ namespace LS
         private void OnSceneChange(Scene oldScene, Scene newScene)
         {
             // LOADING INTO OUR WORLD SCENE AND ENABLING PLAYER INPUT
-            if(newScene.buildIndex == WorldSaveGameManager.instance.GetWorldSceneIndex())
+            if (newScene.buildIndex == WorldSaveGameManager.instance.GetWorldSceneIndex())
             {
                 instance.enabled = true;
             }
@@ -64,13 +66,15 @@ namespace LS
 
         private void OnEnable()
         {
-            if(playerControls == null)
+            if (playerControls == null)
             {
                 playerControls = new PlayerControls();
                 playerControls.PlayerMovement.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
                 playerControls.PlayerCamera.Movement.performed += i => cameraInput = i.ReadValue<Vector2>();
                 playerControls.PlayerActions.Dodge.performed += i => dodgeInput = true;
                 playerControls.PlayerActions.Jump.performed += i => jumpInput = true;
+                playerControls.PlayerActions.LightAttack.performed += i => lightAttackInput = true;
+                playerControls.PlayerActions.HeavyAttack.performed += i => heavyAttackInput = true;
 
                 playerControls.PlayerActions.Sprint.performed += i => sprintInput = true;
                 playerControls.PlayerActions.Sprint.canceled += i => sprintInput = false;
@@ -87,7 +91,7 @@ namespace LS
         {
             if (enabled)
             {
-                if(focus)
+                if (focus)
                 {
                     playerControls.Enable();
                 }
@@ -110,6 +114,7 @@ namespace LS
             HandleDodgeInput();
             HandleSprintInput();
             HandleJumpInput();
+            HandleAttackInput();
         }
 
         #region MOVEMENT
@@ -119,10 +124,10 @@ namespace LS
             horizontalInput = movementInput.x;
             moveAmount = Mathf.Clamp01(Mathf.Abs(verticalInput) + Mathf.Abs(horizontalInput));
 
-            if(moveAmount <= 0.5 && moveAmount > 0)
+            if (moveAmount <= 0.5 && moveAmount > 0)
             {
                 moveAmount = 0.5f;
-            }else if(moveAmount > 0.5 && moveAmount <= 1)
+            } else if (moveAmount > 0.5 && moveAmount <= 1)
             {
                 moveAmount = 1f;
             }
@@ -133,7 +138,7 @@ namespace LS
 
             player.playerAnimatorManager.UpdateAnimtorMovementParameters(0, moveAmount, player.playerNetworkManager.networkIsSpriting.Value);
         }
-    
+
         private void HandleCameraMovementInput()
         {
             cameraVerticalInput = cameraInput.y;
@@ -144,7 +149,7 @@ namespace LS
         #region ACTIONS
         private void HandleDodgeInput()
         {
-            if(dodgeInput)
+            if (dodgeInput)
             {
                 dodgeInput = false;
 
@@ -163,14 +168,29 @@ namespace LS
                 player.playerNetworkManager.networkIsSpriting.Value = false;
             }
         }
-        
+
         private void HandleJumpInput()
         {
-            if(jumpInput)
+            if (jumpInput)
             {
                 jumpInput = false;
 
                 player.playerMovementManager.AttemptToPerformJump();
+            }
+        }
+
+        private void HandleAttackInput()
+        {
+            if(lightAttackInput)
+            {
+                lightAttackInput = false;
+                player.playerAttackManager.HandleLightAttack(player.playerInventoryManager.currentRightHandWeapon);
+            }
+
+            if(heavyAttackInput)
+            {
+                heavyAttackInput = false;
+                player.playerAttackManager.HandleHeavyAttack(player.playerInventoryManager.currentRightHandWeapon);
             }
         }
 

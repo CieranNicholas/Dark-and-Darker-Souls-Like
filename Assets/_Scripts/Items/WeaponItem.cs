@@ -30,10 +30,14 @@ namespace LS
         [Header("Stamina Costs")]
         public int baseStaminaCost = 20;
         // STAMINA MODIFIERS, E.G LIGHT, HEAVY SPRINTING
-    
+
         // ITEM BASED ACTIONS (RB,RT LB, LT)
         //ASHES OF WAR
         // BLOCKING SOUNDS
+
+        [Header("Animations")]
+        public string OH_Light_Attack_1;
+        public string OH_Heavy_Attack_1;
 
     }
 }

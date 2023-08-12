@@ -17,6 +17,7 @@ namespace LS
         [HideInInspector] public PlayerStatsManager playerStatsManager;
         [HideInInspector] public PlayerInventoryManager playerInventoryManager;
         [HideInInspector] public PlayerEquipmentManager playerEquipmentManager;
+        [HideInInspector] public PlayerAttackManager playerAttackManager;
 
         protected override void Awake()
         {
@@ -28,6 +29,7 @@ namespace LS
             playerStatsManager = GetComponent<PlayerStatsManager>();
             playerInventoryManager = GetComponent<PlayerInventoryManager>();
             playerEquipmentManager = GetComponent<PlayerEquipmentManager>();
+            playerAttackManager = GetComponent<PlayerAttackManager>();
         }
 
         protected override void Update()
