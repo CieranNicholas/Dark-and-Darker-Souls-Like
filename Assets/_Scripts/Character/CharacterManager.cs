@@ -23,6 +23,8 @@ namespace LS
         public bool applyRootMotion = false;
         public bool canRotate = true;
         public bool canMove = true;
+        public bool canDoCombo = false;
+
 
         protected virtual void Awake()
         {
@@ -38,6 +40,7 @@ namespace LS
         protected virtual void Update()
         {
             animator.SetBool("isGrounded", isGrounded);
+            canDoCombo = animator.GetBool("canDoCombo");
             // IF THIS CHRACTER IS BEING CONTROLLED FROM OUR SIDE, ASSIGN ITS NET POSITION TO OUR TRANSFORM
             if (IsOwner)
             {

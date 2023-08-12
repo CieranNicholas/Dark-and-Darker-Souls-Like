@@ -57,6 +57,18 @@ namespace LS
                 targetAnimation, 
                 applyRootMotion);
         }
+
+        public void EnableCombo()
+        {
+            character.animator.SetBool("canDoCombo", true);
+            Debug.Log("Combo Enabled");
+        }
+
+        public void DisableCombo()
+        {
+            character.animator.SetBool("canDoCombo", false);
+            Debug.Log("Combo Disabled");
+        }
     }
 
 }

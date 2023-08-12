@@ -30,6 +30,9 @@ namespace LS
         [SerializeField] bool lightAttackInput = false;
         [SerializeField] bool heavyAttackInput = false;
 
+        [Header("Flags")]
+        public bool comboFlag;
+
         public float moveAmount;
 
         private void Awake()
@@ -184,12 +187,30 @@ namespace LS
             if(lightAttackInput)
             {
                 lightAttackInput = false;
-                player.playerAttackManager.HandleLightAttack(player.playerInventoryManager.currentRightHandWeapon);
+                if(player.canDoCombo)
+                {
+
+                    comboFlag = true;
+                    player.playerAttackManager.HandleWeaponCombo(player.playerInventoryManager.currentRightHandWeapon);
+                    comboFlag = false;
+                }
+                else
+                {
+                    //if (player.isPerformingAction)
+                        //return;
+                    //if (player.canDoCombo)
+                        //return;
+                    player.playerAttackManager.HandleLightAttack(player.playerInventoryManager.currentRightHandWeapon);
+                }
             }
 
             if(heavyAttackInput)
             {
                 heavyAttackInput = false;
+
+                if (player.isPerformingAction)
+                    return;
+
                 player.playerAttackManager.HandleHeavyAttack(player.playerInventoryManager.currentRightHandWeapon);
             }
         }
