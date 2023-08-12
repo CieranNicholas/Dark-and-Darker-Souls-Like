@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Straight Sword 2
   itemIcon: {fileID: 0}
   itemDescription: 
-  itemID: 0
+  itemID: 2
   weaponModel: {fileID: 7902661732663924179, guid: f5740aef39d8ac5499665ba721c4ed91,
     type: 3}
   physicalDamage: 25
@@ -25,3 +25,5 @@ MonoBehaviour:
   holyDamage: 0
   poiseDamage: 25
   baseStaminaCost: 20
+  OH_Light_Attack_1: OH_Light_Attack_01
+  OH_Heavy_Attack_1: OH_Heavy_Attack_01
